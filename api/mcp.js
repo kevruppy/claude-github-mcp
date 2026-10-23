@@ -2,8 +2,6 @@ import crypto from 'node:crypto';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 
-// Allowlist: ausschließlich dieser eine Workflow darf ausgelöst werden.
-// Owner/Repo/Workflow/Branch sind fest im Code, der Aufrufer kann nichts davon ändern.
 const OWNER = process.env.GITHUB_OWNER || 'kevruppy';
 const TARGET = {
   owner: OWNER,
@@ -53,7 +51,6 @@ function buildServer() {
 }
 
 export default async function handler(req, res) {
-  // Token kommt aus dem URL-Pfad (/api/mcp/<token>, per Rewrite -> ?token=) oder als Bearer-Header.
   const headerToken = (req.headers['authorization'] || '').replace(/^Bearer /, '');
   if (!tokenOk(req.query?.token) && !tokenOk(headerToken)) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -63,7 +60,6 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // Stateless: pro Request ein neuer Server + Transport
   const server = buildServer();
   const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
   res.on('close', () => { transport.close(); server.close(); });
