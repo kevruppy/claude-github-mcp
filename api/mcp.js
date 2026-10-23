@@ -6,7 +6,7 @@ const OWNER = process.env.GITHUB_OWNER || 'kevruppy';
 const TARGET = {
   owner: OWNER,
   repo: 'fitness_tracking',
-  workflow_id: 'ci.yml',
+  workflow_id: 'sync.yml',
   ref: 'main',
 };
 
