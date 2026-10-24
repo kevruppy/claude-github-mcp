@@ -22,7 +22,7 @@ function buildServer() {
   const server = new McpServer({ name: 'github-action-starter', version: '1.0.0' });
 
   server.tool(
-    'trigger_ci',
+    'GitHubActionTrigger',
     `Triggers the "${TARGET.workflow_id}" GitHub Actions workflow in ${TARGET.owner}/${TARGET.repo} on branch ${TARGET.ref}. Takes no parameters.`,
     {},
     async () => {
